@@ -2,7 +2,7 @@ body {
     background-color: #b4cee7; /* Cor de fundo suave */
   }
   
-.container {
+.container-nav {
     background-color: rgb(67, 148, 255);
     display: flex;
     align-items: center;
