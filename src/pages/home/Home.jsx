@@ -13,11 +13,14 @@ const Home = ({ taskList, setTaskList }) => {
     useEffect(() => {
         if (location.state && location.state.updatedTaskData) {
             const { updatedTaskData, index } = location.state;
-            const updatedTaskList = [...taskList];
-            updatedTaskList[index] = updatedTaskData; 
-            setTaskList(updatedTaskList); 
+            if (taskList[index] !== updatedTaskData) {
+                const updatedTaskList = [...taskList];
+                updatedTaskList[index] = updatedTaskData; 
+                setTaskList(updatedTaskList);
+            }
         }
-    }, [location.state, taskList]); 
+    }, [location.state]); 
+    
 
     const deleteTask = (index) => {
         Swal.fire({
