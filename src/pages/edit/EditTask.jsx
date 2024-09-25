@@ -26,49 +26,51 @@ const EditTask = () => {
     };
 
     return (
-        <div className="edit-task">
-            <h3>Editar Tarefa</h3>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Título"
-                    value={updatedTask}
-                    onChange={(e) => setUpdatedTask(e.target.value)}
-                />
+            <div className='d-flex flex-column align-items-center container page-app'>
+                <h1 className='my-4'>Editar Tarefa</h1>
+                <div className='card p-4 todo-card'>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Título"
+                            value={updatedTask}
+                            onChange={(e) => setUpdatedTask(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={updatedDate}
+                            onChange={(e) => setUpdatedDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Tempo"
+                            value={updatedTime}
+                            onChange={(e) => setUpdatedTime(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <textarea
+                            className="form-control"
+                            placeholder="Descrição"
+                            value={updatedDesc}
+                            onChange={(e) => setUpdatedDesc(e.target.value)}
+                        />
+                    </div>
+                    <button className="btn btn-primary my-3" onClick={handleUpdate}>
+                        Atualizar
+                    </button>
+                    <button className="btn btn-secondary mt-3" onClick={() => navigate('/')}>
+                        Cancelar
+                    </button>
+                </div>
             </div>
-            <div className="mb-3">
-                <input
-                    type="date"
-                    className="form-control"
-                    value={updatedDate}
-                    onChange={(e) => setUpdatedDate(e.target.value)}
-                />
-            </div>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Tempo"
-                    value={updatedTime}
-                    onChange={(e) => setUpdatedTime(e.target.value)}
-                />
-            </div>
-            <div className="mb-3">
-                <textarea
-                    className="form-control"
-                    placeholder="Descrição"
-                    value={updatedDesc}
-                    onChange={(e) => setUpdatedDesc(e.target.value)}
-                />
-            </div>
-            <button className="btn btn-primary" onClick={handleUpdate}>
-                Atualizar
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/')}>
-                Cancelar
-            </button>
-        </div>
     );
 };
 
