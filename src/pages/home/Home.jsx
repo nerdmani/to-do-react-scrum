@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Nav } from "../../components";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Home.css";
 import { Check, Trash, Share2, Edit } from 'lucide-react';
+import Swal from 'sweetalert2';
 
-const Home = ({ taskList }) => {
-    const navigate = useNavigate(); // Hook para navegação
+const Home = ({ taskList, setTaskList }) => {
+    const navigate = useNavigate();
+    const location = useLocation(); 
+    
+    useEffect(() => {
+        if (location.state && location.state.updatedTaskData) {
+            const { updatedTaskData, index } = location.state;
+            const updatedTaskList = [...taskList];
+            updatedTaskList[index] = updatedTaskData; 
+            setTaskList(updatedTaskList); 
+        }
+    }, [location.state, taskList]); 
+
+    const deleteTask = (index) => {
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Você não poderá reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const updatedTaskList = taskList.filter((_, i) => i !== index);
+                setTaskList(updatedTaskList);
+                Swal.fire('Excluído!', 'Sua tarefa foi excluída.', 'success');
+            }
+        });
+    };
+
+    const openEditTask = (index) => {
+        const taskToEdit = taskList[index];
+        navigate('/edit', { state: { task: taskToEdit, index } });
+    };
 
     return (
         <div>
@@ -25,10 +59,17 @@ const Home = ({ taskList }) => {
                                         <p className="card-text"><strong>Tempo: </strong>{item.time}</p>
                                         <p className="card-text"><strong>Descrição: </strong> {item.desc}</p> 
                                         <div className="d-flex justify-content-between">
-                                            <button className="btn btn-primary me-2"><Edit size={16} /></button>
+                                            <button className="btn btn-primary me-2" onClick={() => openEditTask(index)}>
+                                                <Edit size={16} />
+                                            </button>
                                             <button className="btn btn-secondary me-2"><Share2 size={16} /></button>
                                             <button className="btn btn-success me-2"><Check size={16}/></button>
-                                            <button className="btn btn-danger"><Trash size={16} /></button>
+                                            <button 
+                                                className="btn btn-danger" 
+                                                onClick={() => deleteTask(index)}
+                                            >
+                                                <Trash size={16} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

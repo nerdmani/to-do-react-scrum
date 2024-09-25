@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CreateAdd.css';
 
@@ -17,12 +18,26 @@ const CreateAdd = ({ setTaskList }) => {
                 { task, date, time, desc }
             ]);
 
+            Swal.fire({
+                title: 'Tarefa Adicionada!',
+                text: 'Sua tarefa foi adicionada com sucesso.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
             setTask('');
             setDate('');
             setTime('');
             setDesc('');
 
             navigate('/');
+        } else {
+            Swal.fire({
+                title: 'Erro!',
+                text: 'Por favor, preencha todos os campos.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
         }
     }
 
@@ -37,7 +52,7 @@ const CreateAdd = ({ setTaskList }) => {
                         className='form-control'
                         placeholder='Adicionar tarefa...'
                         value={task}
-                        onChange={e => setTask(e.target.value)} 
+                        onChange={e => setTask(e.target.value)}
                     />
                 </div>
 
@@ -46,7 +61,7 @@ const CreateAdd = ({ setTaskList }) => {
                         type='date'
                         className='form-control'
                         value={date}
-                        onChange={e => setDate(e.target.value)} 
+                        onChange={e => setDate(e.target.value)}
                     />
                 </div>
 
@@ -55,12 +70,12 @@ const CreateAdd = ({ setTaskList }) => {
                         type='time'
                         className='form-control'
                         value={time}
-                        onChange={e => setTime(e.target.value)} 
+                        onChange={e => setTime(e.target.value)}
                     />
                 </div>
 
                 <div className='form-group'>
-                    <textarea
+                    <textarea  
                         className='form-control'
                         placeholder='Descrição...'
                         value={desc}
