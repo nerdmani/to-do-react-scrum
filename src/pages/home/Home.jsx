@@ -3,7 +3,7 @@ import { Nav } from "../../components";
 import { useNavigate } from 'react-router-dom';
 
 const Home = ({ taskList }) => {
-    const navigate = useNavigate(); // Hook para navegação
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -16,13 +16,17 @@ const Home = ({ taskList }) => {
                 >
                     Adicionar Tarefa
                 </button>
-                <ul className='list-group'>
+                <ul className='list-group '>
                     {taskList.length === 0 ? (
-                        <li className='list-group-item'>Nenhuma tarefa adicionada.</li>
+                        <li className='list-group-item'  >Nenhuma tarefa adicionada.</li>
                     ) : (
                         taskList.map((item, index) => (
-                            <li className='list-group-item' key={index}>
-                                <strong>{item.task}</strong> - {item.date} {item.time}
+                            <li className='list-group-item'style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} key={index}>
+                                <div><strong>Título da tarefa:</strong> {item.task}</div>
+                                <div><strong>Data:</strong> {item.date}</div>
+                                <div><strong>Hora:</strong> {item.time}</div>
+                                <div><strong>Mensagem:</strong></div>
+                                <div>{item.message}</div>
                             </li>
                         ))
                     )}
