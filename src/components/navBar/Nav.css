@@ -8,9 +8,9 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 10vh;
+    height: 16vh;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
 }
 
 .container h1 {
