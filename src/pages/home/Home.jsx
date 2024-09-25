@@ -45,6 +45,19 @@ const Home = ({ taskList, setTaskList }) => {
         navigate('/edit', { state: { task: taskToEdit, index } });
     };
 
+    const shareTask = (index) => {
+        const taskToShare = taskList[index];
+        const linkToCopy = `${window.location.origin}/edit/${index}`;
+        navigator.clipboard.writeText(linkToCopy);
+        Swal.fire({
+            title: 'Link copiado',
+            text: 'O link foi copiado para a área de transferência',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+
+    };
+
     return (
         <div>
             <Nav text={"Visualização de tarefas"} />
@@ -80,7 +93,10 @@ const Home = ({ taskList, setTaskList }) => {
                                             <button className="btn btn-primary me-2" onClick={() => openEditTask(index)}>
                                                 <Edit size={16} />
                                             </button>
-                                            <button className="btn btn-secondary me-2"><Share2 size={16} /></button>
+                                            <button 
+                                                className="btn btn-secondary me-2"
+                                                onClick={() => shareTask(index)}
+                                                ><Share2 size={16} /></button>
                                             <button className="btn btn-success me-2"><Check size={16}/></button>
                                             <button 
                                                 className="btn btn-danger" 
