@@ -47,7 +47,7 @@ const Home = ({ taskList, setTaskList }) => {
 
     const shareTask = (index) => {
         const taskToShare = taskList[index];
-        const linkToCopy = `${window.location.origin}/edit/${index}`;
+        const linkToCopy = `${window.location.origin}/view/${index}`;
         navigator.clipboard.writeText(linkToCopy);
         Swal.fire({
             title: 'Link copiado',
@@ -58,6 +58,16 @@ const Home = ({ taskList, setTaskList }) => {
 
     };
 
+    const visualizar = (index) => {
+        if (index === null){
+            console.log("Nada ainda");
+        }
+        else {
+            const taskToView = taskList[index];
+            navigate('/view', { state: { task: taskToView, index } });
+        }
+    };
+    
     return (
         <div>
             <Nav text={"Visualização de tarefas"} />
@@ -82,7 +92,11 @@ const Home = ({ taskList, setTaskList }) => {
                         <li className='list-group-item'>Nenhuma tarefa adicionada.</li>
                     ) : (
                         taskList.map((item, index) => (
-                            <li className='list-group-item' key={index}>
+                            <li 
+                                className='list-group-item' 
+                                key={index} 
+                                onClick={() => visualizar(index)} // Move onClick here
+                            >
                                 <div className="card mb-3" style={{ width: '30rem' }}>
                                     <div className="card-body">
                                         <h5 className="card-title"><strong>Titulo: </strong>{item.task}</h5>
@@ -90,17 +104,24 @@ const Home = ({ taskList, setTaskList }) => {
                                         <p className="card-text"><strong>Tempo: </strong>{item.time}</p>
                                         <p className="card-text"><strong>Descrição: </strong> {item.desc}</p> 
                                         <div className="d-flex justify-content-between">
-                                            <button className="btn btn-primary me-2" onClick={() => openEditTask(index)}>
+                                            <button 
+                                                className="btn btn-primary me-2" 
+                                                onClick={(e) => { e.stopPropagation(); openEditTask(index); }}
+                                            >
                                                 <Edit size={16} />
                                             </button>
                                             <button 
-                                                className="btn btn-secondary me-2"
-                                                onClick={() => shareTask(index)}
-                                                ><Share2 size={16} /></button>
-                                            <button className="btn btn-success me-2"><Check size={16}/></button>
+                                                className="btn btn-secondary me-2" 
+                                                onClick={(e) => { e.stopPropagation(); shareTask(index); }}
+                                            >
+                                                <Share2 size={16} />
+                                            </button>
+                                            <button className="btn btn-success me-2" onClick={(e) => e.stopPropagation()}>
+                                                <Check size={16} />
+                                            </button>
                                             <button 
                                                 className="btn btn-danger" 
-                                                onClick={() => deleteTask(index)}
+                                                onClick={(e) => { e.stopPropagation(); deleteTask(index); }}
                                             >
                                                 <Trash size={16} />
                                             </button>
