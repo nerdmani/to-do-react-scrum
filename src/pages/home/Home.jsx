@@ -5,10 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Home.css";
 import { Check, Trash, Share2, Edit } from 'lucide-react';
 import Swal from 'sweetalert2';
+import useAuth from "../../hooks/useAuth";
+import Buton from "../../components/Button/Buton";
 
 const Home = ({ taskList, setTaskList }) => {
     const navigate = useNavigate();
     const location = useLocation(); 
+    const { signout } = useAuth();
     
     useEffect(() => {
         if (location.state && location.state.updatedTaskData) {
@@ -110,6 +113,7 @@ const Home = ({ taskList, setTaskList }) => {
                                             >
                                                 <Trash size={16} />
                                             </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +128,9 @@ const Home = ({ taskList, setTaskList }) => {
                 >
                     Adicionar Tarefa
                 </button>
+                <Buton Text="Sair" onClick={() => [signout(), navigate("/")]}>
+                    Sair
+               </Buton>
             </div>
         </div>
     );
