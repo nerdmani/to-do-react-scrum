@@ -9,7 +9,13 @@ import Swal from 'sweetalert2';
 const Home = ({ taskList, setTaskList }) => {
     const navigate = useNavigate();
     const location = useLocation(); 
-    
+
+    // Inicializa o estado de tarefas concluídas com base no localStorage
+    const [completedTasks, setCompletedTasks] = useState(() => {
+        const saved = localStorage.getItem('completedTasks');
+        return saved ? JSON.parse(saved) : Array(taskList.length).fill(false);
+    });
+
     useEffect(() => {
         if (location.state && location.state.updatedTaskData) {
             const { updatedTaskData, index } = location.state;
@@ -20,7 +26,11 @@ const Home = ({ taskList, setTaskList }) => {
             }
         }
     }, [location.state]); 
-    
+
+    useEffect(() => {
+        // Atualiza o localStorage sempre que completedTasks mudar
+        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+    }, [completedTasks]);
 
     const deleteTask = (index) => {
         Swal.fire({
@@ -35,6 +45,11 @@ const Home = ({ taskList, setTaskList }) => {
             if (result.isConfirmed) {
                 const updatedTaskList = taskList.filter((_, i) => i !== index);
                 setTaskList(updatedTaskList);
+                setCompletedTasks(prev => {
+                    const updated = [...prev];
+                    updated.splice(index, 1); // Remove o estado da tarefa excluída
+                    return updated;
+                });
                 Swal.fire('Excluído!', 'Sua tarefa foi excluída.', 'success');
             }
         });
@@ -55,36 +70,36 @@ const Home = ({ taskList, setTaskList }) => {
             icon: 'success',
             confirmButtonText: 'OK'
         });
-
     };
 
     const visualizar = (index) => {
-        if (index === null){
+        if (index === null) {
             console.log("Nada ainda");
-        }
-        else {
+        } else {
             const taskToView = taskList[index];
             navigate('/view', { state: { task: taskToView, index } });
         }
     };
-    
+
+    const completeTask = (index) => {
+        // Atualiza o estado de tarefas concluídas
+        setCompletedTasks(prev => {
+            const updated = [...prev];
+            updated[index] = true; // Marca a tarefa como concluída
+            return updated;
+        });
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Tarefa realizada com sucesso!',
+            confirmButtonText: 'OK'
+        });
+    };
+
     return (
         <div>
             <Nav text={"Visualização de tarefas"} />
-
-            <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <img src="src\img\floresta-amazonica-paisagem.webp" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                    <div className="carousel-item">
-                        <img src="src\img\paisagem-natural-e-humanizada.jpg" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                    <div className="carousel-item">
-                        <img src="src\img\paisagem-natural.jpg" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                </div>
-            </div>
 
             <div className="d-flex flex-column align-items-center mt-4" style={{ position: 'relative', zIndex: 1 }}>
                 <ul className='list-group'>
@@ -93,11 +108,11 @@ const Home = ({ taskList, setTaskList }) => {
                     ) : (
                         taskList.map((item, index) => (
                             <li 
-                                className='list-group-item' 
+                                className={`list-group-item ${completedTasks[index] ? 'completed' : ''}`} // Adiciona a classe 'completed' se a tarefa estiver concluída
                                 key={index} 
-                                onClick={() => visualizar(index)} // Move onClick here
+                                onClick={() => visualizar(index)}
                             >
-                                <div className="card mb-3" style={{ width: '30rem' }}>
+                                <div className={`card mb-3 ${completedTasks[index] ? 'bg-dark text-white' : ''}`} style={{ width: '30rem' }}>
                                     <div className="card-body">
                                         <h5 className="card-title"><strong>Titulo: </strong>{item.task}</h5>
                                         <h6 className="card-subtitle mb-2 text-muted"><strong>Data: </strong>{item.date}</h6>
@@ -116,7 +131,11 @@ const Home = ({ taskList, setTaskList }) => {
                                             >
                                                 <Share2 size={16} />
                                             </button>
-                                            <button className="btn btn-success me-2" onClick={(e) => e.stopPropagation()}>
+                                            <button 
+                                                className="btn btn-success me-2" 
+                                                onClick={(e) => { e.stopPropagation(); completeTask(index); }}
+                                                disabled={completedTasks[index]} // Desabilita o botão se a tarefa estiver concluída
+                                            >
                                                 <Check size={16} />
                                             </button>
                                             <button 
