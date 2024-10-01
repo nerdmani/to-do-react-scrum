@@ -71,21 +71,6 @@ const Home = ({ taskList, setTaskList }) => {
     return (
         <div>
             <Nav text={"Visualização de tarefas"} />
-
-            <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <img src="src\img\floresta-amazonica-paisagem.webp" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                    <div className="carousel-item">
-                        <img src="src\img\paisagem-natural-e-humanizada.jpg" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                    <div className="carousel-item">
-                        <img src="src\img\paisagem-natural.jpg" className="d-block w-100" alt="Paisagem Natural" />
-                    </div>
-                </div>
-            </div>
-
             <div className="d-flex flex-column align-items-center mt-4" style={{ position: 'relative', zIndex: 1 }}>
                 <ul className='list-group'>
                     {taskList.length === 0 ? (

@@ -5,6 +5,12 @@ import CreateAdd from '../src/pages/create/CreateAdd';
 import EditTask from '../src/pages/edit/EditTask';
 import View from './pages/view/View';
 
+const Private = ({ Item }) => {
+    const signed = false;
+
+    return signed > 0 ? <Item /> : <Signin />;
+}
+
 const App = () => {
     const [taskList, setTaskList] = useState([]);
 
@@ -12,6 +18,7 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/" element={<Home taskList={taskList} setTaskList={setTaskList} />} />
+                <Route exact path='create' element={<Private Item={Home} />} />
                 <Route path="/create" element={<CreateAdd setTaskList={setTaskList} />} />
                 <Route path="/edit" element={<EditTask />} /> 
                 <Route path="/view" element={<View/>} />
